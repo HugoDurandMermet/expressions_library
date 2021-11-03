@@ -1,0 +1,415 @@
+{
+    "Waves": {
+        "Random wave": {
+            "expression": "random((frame+offset)/WaveLength)*(maxVal-minVal) + minVal",
+            "example": "random((frame)/10)",
+            "description": ""
+        },
+        "Noise wave": {
+            "expression": "(noise((frame+offset)/waveLength)+1)/2 * (maxVal-minVal) + minVal",
+            "example": "(noise((frame)/10)+1)/2",
+            "description": ""
+        },
+        "Sine wave": {
+            "expression": "(sin(2*pi*(frame+offset)/waveLength)+1)/2 * (maxVal-minVal) + minVal",
+            "example": "(sin(2*pi*(frame)/24)+1)/2",
+            "description": ""
+        },
+        "Triangle wave": {
+            "expression": "(asin(sin(2*pi*(frame+offset)/waveLength))/pi+0.5) * (maxVal-minVal) + minVal",
+            "example": "(asin(sin(2*pi*(frame)/24))/pi+0.5)",
+            "description": ""
+        },
+        "Square wave": {
+            "expression": "int(sin(2*pi*(frame+offset)/waveLength)+1) * (maxVal-minVal) + minVal",
+            "example": "int(sin(2*pi*(frame)/24)+1)",
+            "description": ""
+        },
+        "Sawtooth wave": {
+            "expression": "((frame+offset) % waveLength)/waveLength * (maxVal-minVal) + minVal",
+            "example": "((frame) % 24)/24",
+            "description": ""
+        },
+        "Sawtooth (parabolic) wave":{
+            "expression": "sin((pi*(frame+offset)/(2*waveLength)) % (pi/2)) * (maxVal-minVal) + minVal",
+            "example": "sin((pi*(frame)/(2*24)) % (pi/2))",
+            "description": ""
+        },
+        "Sawtooth (parabolic reversed) wave":{
+            "expression": "cos((pi*(frame+offset)/(2*waveLength)) % (pi/2)) * (maxVal-minVal) + minVal",
+            "example": "cos((pi*(frame)/(2*24)) % (pi/2))",
+            "description": ""
+        },
+        "Sawtooth (exponential) wave":{
+            "expression": "(exp(2*pi*((frame+offset) % waveLength)/waveLength)-1)/exp(2*pi) * (maxVal-minVal) + minVal",
+            "example": "(exp(2*pi*((frame) % 24)/24)-1)/exp(2*pi)",
+            "description": ""
+        },
+        "Bounce wave":{
+            "expression": "abs(sin(pi*(frame + offset)/waveLength))* (maxVal-minVal) + minVal",
+            "example": "abs(sin(pi*(frame)/24))",
+            "description": ""
+        },
+        "Blip":{
+            "expression": "((frame+(offset+waveLength)) % (waveLength+blipLength)/(waveLength))*(waveLength/blipLength) - (waveLength/blipLength) >= 0 ? maxVal : minVal",
+            "example": "((frame+20) % (20+5)/(20)) *(20/5) - (20/5) >= 0 ? 1 : 0",
+            "description": ""
+        },
+        "Sineblip":{
+            "expression": "((int((frame+offset) % waveLength)) >= 0 ? ((int((frame+offset) % waveLength))<= (0+(blipLength-1)) ? ((sin(pi*((frame+offset) % waveLength)/blipLength)/2+1/2) *(2*maxVal-2*minVal) + (2*minVal-maxVal)) : minVal)  : minVal)",
+            "example": "((int(frame % 20)) >= 0 ? ((int(frame % 20)) <= (5-1) ?((sin(pi*(frame % 20)/5)/2+1/2) * (2*1-2*0) + (2*0-1)) : 0)  : 0)",
+            "description": ""
+        }
+    },
+    "Conditions": {
+        "Equal Values Condition": {
+            "expression": "value_1  ==  value_2  ?  if  :  else",
+            "example": "frame == 1010 ? 50 : 100",
+            "description": "Checks if value_1 and value_2 are equal or not. If yes, returns if value, if not, returns else value"
+        },
+        "Unequal Values Condition": {
+            "expression": "value_1  !=  value_2  ?  if  :  else",
+            "example": "frame != 1010 ? 50 : 100",
+            "description": "Checks if value_1 and value_2 are equal or not. If not, returns if value, if yes, returns else value"
+        },
+        "Superior Value Condition": {
+            "expression": "value_1  >  value_2  ?  if  :  else",
+            "example": "frame > 1010 ? 50 : 100",
+            "description": "Checks if value_1 is greater than value_2. If yes, returns if value, if not, returns else value"
+        },
+        "Inferior Value Condition": {
+            "expression": "value_1  <  value_2  ?  if  :  else",
+            "example": "frame == 1010 ? 50 : 100",
+            "description": "Checks if value_1 is less than value_2. If yes, returns if value, if not, returns else value"
+        },
+        "Superior or Equal Value Condition": {
+            "expression": "value_1  >=  value_2  ?  if  :  else",
+            "example": "frame > 1010 ? 50 : 100",
+            "description": "Checks if value_1 is greater than or equal to value_2. If yes, returns if value, if not, returns else value"
+        },
+        "Inferior or Equal Value Condition": {
+            "expression": "value_1  <=  value_2  ?  if  :  else",
+            "example": "frame == 1010 ? 50 : 100",
+            "description": "Checks if value_1 is less than or equal to value_2. If yes, returns if value, if not, returns else value"
+        },
+        "Sum of Values Condition": {
+            "expression": "{value_1  +  value_2  ==  value_3 } ? {return if } : {return else }",
+            "example": "[if {[value Blur11.size]+[value Blur12.size]==10} {return \"500\"} {return \"10\"}]",
+            "description": "If the sum of value_1 and value_2 equals to value_3, returns if value. If not, returns else value."
+        },
+        "Substraction of Values Condition": {
+            "expression": "{value_1  -  value_2  ==  value_3 } ? {return if } : {return else }",
+            "example": "[if {[value Blur11.size]-[value Blur12.size]==10} {return \"500\"} {return \"10\"}]",
+            "description": "If value_2 substracted from value_1 equals to value_3, returns if value. If not, returns else value."
+        },
+        "Product of Values Condition": {
+            "expression": "{value_1  *  value_2  ==  value_3 } ? {return if } : {return else }",
+            "example": "[if {[value Blur11.size]*[value Blur12.size]==10} {return \"500\"} {return \"10\"}]",
+            "description": "If value_1 multiplied by value_2 equals to value_3, returns if value. If not, returns else value."
+        },
+        "Division of Values Condition": {
+            "expression": "{value_1  /  value_2  ==  value_3 } ? {return if } : {return else }",
+            "example": "[if {[value Blur11.size]/[value Blur12.size]==10} {return \"500\"} {return \"10\"}]",
+            "description": "If value_1 divided by value_2 equals to value_3, returns if value. If not, returns else value."
+        },
+        "Remainder of Values Condition": {
+            "expression": "{value_1  %  value_2  ==  value_3 } ? {return if } : {return else }",
+            "example": "[if {[value Blur11.size]%[value Blur12.size]==10} {return \"500\"} {return \"10\"}]",
+            "description": "If the remainder of an integer division between value_2 and value_1 equals to value_3, returns if value. If not, returns else value."
+        },
+        "AND Conditions": {
+            "expression": "condition_1  &&  condition_2  ?  if  :  else" ,
+            "example": "frame < 1010 && [value mix] == .5 ? 50 : 100",
+            "description": "If both conditions are true, returns if value. If not, returns else value"
+        },
+        "OR Conditions": {
+            "expression": "condition_1  ||  condition_2  ?  if  :  else",
+            "example": "frame < 1010 || [value mix] == .5 ? 50 : 100",
+            "description": "If any of the two conditions is true, returns if value. If not, returns else value"
+        }
+    },
+    "General Commands": {
+        "Knob Value": {
+            "expression": "[value  knob_name]",
+            "example": "",
+            "description": "Returns the current value of a knob"
+        },
+        "Set Current Frame": {
+            "expression": "frame == value",
+            "example": "",
+            "description": "Set the frame at the value number"
+        },
+        "Check Frame Range": {
+            "expression": "inrange(frame, value_1, value_2)",
+            "example": "",
+            "description": "Returns True (=1) when current frame is in range"
+        },
+        "Check Node / Knob Exists": {
+            "expression": "[exists  knob_or_node_name]",
+            "example": "",
+            "description": "Returns True ( =1 ) if the named knob or node exists."
+        },
+        "Set Knob Value": {
+            "expression": "[knob  knob_name  new_value]",
+            "example": "",
+            "description": "Will set a new value for the specified knob"
+        },
+        "Set Knob KeyFrame and Value": {
+            "expression": "[setkey  knob_name  frame number  new_value]",
+            "example": "",
+            "description": "Set a key for a knob on a specified frame with specified new value"
+        },
+        "Disable in GUI only": {
+            "expression": "$gui",
+            "example": "",
+            "description": "Returns False when Nuke is running, but remains True for rendering"
+        }
+    },
+    "Math Functions": {
+        "Absolute Value": {
+            "expression": "abs (x)",
+            "example": "",
+            "description": "Returns the absolute value of the floating-point number x."
+        },
+        "Arc Cosine": {
+            "expression": "acos (x)",
+            "example": "",
+            "description": "Calculates the arc cosine of x; that is the value whose cosine is x."
+        },
+        "Arc Sine": {
+            "expression": "asin (x)",
+            "example": "",
+            "description": "Calculates the arc sine of x; that is the value whose sine is x."
+        },
+        "Arc Tangent": {
+            "expression": "atan (x)",
+            "example": "",
+            "description": "Calculates the arc tangent of x; that is the value whose tangent is x. The return value is between -PI/2 and PI/2."
+        },
+        "Arc Tangent on Two Variables": {
+            "expression": "atan2 (x, y)",
+            "example": "",
+            "description": "Calculates the arc tangent of the two variables x and y. This function is useful to calculate the angle between two vectors."
+        },
+        "Round Number": {
+            "expression": "ceil (x)" ,
+            "example": "",
+            "description": "Round x up to the nearest integer."
+        },
+        "Clamp": {
+            "expression": "clamp (x, min, max)",
+            "example": "",
+            "description": "Return x clamped to [min ... max]."
+        },
+        "Cosine": {
+            "expression": "cos (x)",
+            "example": "",
+            "description": "Returns the cosine of x."
+        },
+        "Hyperbolic Cosine": {
+            "expression": "cosh (x)",
+            "example": "",
+            "description": "Returns the hyperbolic cosine of x, which is defined mathematically as (exp(x) + exp(-x)) / 2."
+        },
+        "Animation Curve": {
+            "expression": "curve (frame)",
+            "example": "",
+            "description": "Returns the y value of the animation curve at the given frame."
+        },
+        "Radians to Degrees": {
+            "expression": "degrees (x)",
+            "example": "",
+            "description": "Convert the angle x from radians into degrees."
+        },
+        "Power of": {
+            "expression": "exp (x)",
+            "example": "",
+            "description": "Returns the value of e (the base of natural logarithms) raised to the power of x."
+        },
+        "Exponent of": {
+            "expression": "exponent (x)",
+            "example": "",
+            "description": "Exponent of x."
+        },
+        "Fractional Brownian Motion": {
+            "expression": "fBm (x, y, z, octaves, lacunarity, gain)",
+            "example": "",
+            "description": "Fractional Brownian Motion. This is the sum of octaves calls to noise(). For each of them the input point is multiplied by pow(lacunarity,i) and the result is multiplied by pow(gain,i). For normal use, lacunarity should be greater than 1 and gain should be less than 1."
+        },
+        "False": {
+            "expression": "false ()",
+            "example": "",
+            "description": "Always returns 0"
+        },
+        "Floor Number": {
+            "expression":  "floor (x)",
+            "example": "",
+            "description": "Round x down to the nearest integer."
+        },
+        "Fmod of two values": {
+            "expression": "fmod (x, y)",
+            "example": "",
+            "description": "Computes the remainder of dividing x by y. The return value is x - n y, where n is the quotient of x / y, rounded towards zero to an integer."
+        },
+        "Current Frame": {
+            "expression": "frame ()",
+            "example": "",
+            "description": "Return the current frame number."
+        },
+        "rec709 to Linear": {
+            "expression": "from_rec709f (color component)",
+            "example": "",
+            "description": "Converts a rec709 byte value to a linear brightness"
+        },
+        "sRGB to Linear": {
+            "expression":  "from_sRGB (color component)",
+            "example": "",
+            "description": "Converts an sRGB pixel value to a linear value."
+        },
+        "Hypotenuse": {
+            "expression": "hypot (x, y)",
+            "example": "",
+            "description": "Returns the sqrt(x*x + y*y). This is the length of the hypotenuse of a right-angle triangle with sides of length x and y."
+        },
+        "Round down to Integer": {
+            "expression":  "int (x)",
+            "example": "",
+            "description": "Round x to the nearest integer not larger in absolute value."
+        },
+        "LdExp": {
+            "expression": "ldexp (x)",
+            "example": "",
+            "description": "Returns the result of multiplying the floating-point number x by 2 raised to the power exp."
+        },
+        "Lerp": {
+            "expression": "lerp (a, b, x)",
+            "example": "",
+            "description": "Returns a point on the line f(x) where f(0)==a and f(1)==b. Matches the lerp function in other shading languages."
+        },
+        "Natural Logarithm": {
+            "expression": "log (x)",
+            "example": "",
+            "description": "Returns the natural logarithm of x."
+        },
+        "Base-10 Logarithm": {
+            "expression": "log10 (x)",
+            "example": "",
+            "description": "Returns the base-10 logarithm of x."
+        },
+        "Normalized Fraction": {
+            "expression": "mantissa (x)",
+            "example": "",
+            "description": "Returns the normalized fraction. If the argument x is not zero, the normalized fraction is x times a power of two, and is always in the range 1/2 (inclusive) to 1 (exclusive). If x is zero, then the normalized fraction is zero and exponent() Returns zero."
+        },
+        "Maximum": {
+            "expression": "max (x, y, ... )",
+            "example": "",
+            "description": "Return the greatest of all values."
+        },
+        "Minimum": {
+            "expression": "min (x, y, ... )",
+            "example": "",
+            "description": "Return the smallest of all values."
+        },
+        "Noise": {
+            "expression": "noise (x, y, z)",
+            "example": "",
+            "description": "Creates a 3D Perlin noise value. This produces a signed range centerd on zero. The absolute maximum range is from -1.0 to 1.0. This produces zero at all integers, so you should rotate the coordinates somewhat (add a fraction of y and z to x, etc.) if you want to use this for random number generation."
+        },
+        "Pi": {
+            "expression": "pi ()",
+            "example": "",
+            "description": "Returns the value for pi (3.141592654...)."
+        },
+        "Raise by Power of Value": {
+            "expression": "pow (x, y)",
+            "example": "",
+            "description": "Returns the value of x raised to the power of y."
+        },
+        "Raise by Power of Two": {
+            "expression": "pow2 (x)",
+            "example": "",
+            "description": "Returns the value of x raised to the power of 2."
+        },
+        "Degrees to Radians": {
+            "expression": "radians (x)",
+            "example": "",
+            "description": "Convert the angle x from degrees into radians."
+        },
+        "Random": {
+            "expression": "random (x, y, z)",
+            "example": "",
+            "description": "Creates a pseudo random value between 0 and 1. It always generates the same value for the same x, y and z. Calling random with no arguments creates a different value on every invocation."
+        },
+        "Round to Integer": {
+            "expression": "rint (x)",
+            "example": "",
+            "description": "Round x to the nearest integer."
+        },
+        "Sine": {
+            "expression": "sin (x)",
+            "example": "",
+            "description": "Returns the sine of x."
+        },
+        "Hyperbolic Sine": {
+            "expression": "sinh (x)",
+            "example": "",
+            "description": "Returns the hyperbolic sine of x, which is defined mathematically as (exp(x) - exp(-x)) / 2."
+        },
+        "Smoothstep": {
+            "expression": "smoothstep (a, b, x)",
+            "example": "",
+            "description": "Returns 0 if x is less than a, returns 1 if x is greater or equal to b, returns a smooth cubic interpolation otherwise. Matches the smoothstep function in other shading languages."
+        },
+        "Square Root": {
+            "expression": "sqrt (x)",
+            "example": "",
+            "description": "Returns the non-negative square root of x."
+        },
+        "Step": {
+            "expression": "step (a, x)",
+            "example": "",
+            "description": "Returns 0 if x is less than a, returns 1 otherwise. Matches the step function other shading languages."
+        },
+        "Tangent": {
+            "expression": "tan (x)",
+            "example": "",
+            "description": "Returns the tangent of x."
+        },
+        "Hyperbolic Tangent": {
+            "expression": "tanh (x)",
+            "example": "",
+            "description": "Returns the hyperbolic tangent of x, which is defined mathematically as sinh(x) / cosh(x)."
+        },
+        "Float to rec709": {
+            "expression": "to_rec709f (color component)",
+            "example": "",
+            "description": "Converts a floating point pixel value to an 8-bit value that represents that brightness in the rec709 standard when that standard is mapped to the 0-255 range."
+        },
+        "Float to sRGB": {
+            "expression": "to_sRGB (color component)",
+            "example": "",
+            "description": "Converts a floating point pixel value to an 8-bit value that represents that number in sRGB space."
+        },
+        "True": {
+            "expression": "true ()",
+            "example": "",
+            "description": "Always Returns 1."
+        },
+        "Round to not larger integer": {
+            "expression": "trunc (x)",
+            "example": "",
+            "description": "Round x to the nearest integer not larger in absolute value."
+        },
+        "Turbulence": {
+            "expression": "turbulence (x, y, z, octaves, lucanarity, gain)",
+            "example": "",
+            "description": "This is the same as fBm() except the absolute value of the noise() function is used."
+        },
+        "Value at Frame": {
+            "expression": "value (frame)",
+            "example": "",
+            "description": "Evaluates the y value for an animation at the given frame."
+        }
+    }
+}

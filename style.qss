@@ -1,0 +1,16 @@
+QTreeView::item {
+    border-bottom: 1px solid rgb(80, 80, 80);
+    border-right: 1px solid rgb(80, 80, 80);
+    height: 40px;
+    padding: 0px 0;
+}
+
+QLabel#category_label {
+    background-color: rgba(7, 63, 205, 0.166);
+    color: rgb(148, 202, 244);
+}
+
+QLabel#name_label {
+    background-color: rgba(83, 7, 205, 0.166);
+    color: rgb(161, 148, 244);
+}
