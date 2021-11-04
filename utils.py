@@ -8,3 +8,4 @@ def getCurrentKnob():
         :rtype: Nuke Object
     """
     return nuke.thisKnob()
+

@@ -6,6 +6,7 @@ from PySide2 import (
 )
 
 from library_tree import LibraryTreeWidget
+from search_bar import SearchBar
 from utils import getCurrentKnob
 
 
@@ -33,8 +34,12 @@ class ExpressionsLibraryWidget(QtWidgets.QDialog):
 
         current_knob = getCurrentKnob()
 
+        search_widget = SearchBar()
         tree_widget = LibraryTreeWidget(knob=current_knob)
 
+        search_widget.line_edit.textChanged.connect(tree_widget.search_items)
+
+        self.layout.addWidget(search_widget)
         self.layout.addWidget(tree_widget)
         self.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
 

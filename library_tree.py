@@ -47,6 +47,8 @@ class LibraryTreeWidget(QtWidgets.QTreeWidget):
         self.setHeaderLabels(HEADERS_LIST)
 
         self.expressions_data = {}
+        self.all_category_items = []
+        self.all_name_items = []
 
         self.loadData()
         self.initUI()
@@ -74,6 +76,7 @@ class LibraryTreeWidget(QtWidgets.QTreeWidget):
             category_label.setFont(category_font)
 
             self.setItemWidget(category_item, 0, category_label)
+            self.all_category_items.append(category_item)
 
             expressions = self.expressions_data[category]
 
@@ -89,6 +92,15 @@ class LibraryTreeWidget(QtWidgets.QTreeWidget):
                 self.setItemWidget(name_item, 0, name_label)
 
                 expression = expressions[name]
+
+                reference_data = "{name} {expression} {description}".format(
+                    name=name,
+                    expression=expression["expression"],
+                    description=expression["description"]
+                )
+                name_item.setData(1, QtCore.Qt.ForegroundRole, reference_data)
+
+                self.all_name_items.append(name_item)
 
                 expression_item = QtWidgets.QTreeWidgetItem(name_item)
                 expression_label = QtWidgets.QLabel(expression["expression"])
@@ -136,3 +148,39 @@ class LibraryTreeWidget(QtWidgets.QTreeWidget):
             :type expression: str
         """
         self.target_knob.setExpression(expression)
+
+
+    def search_items(self, terms):
+        """ Search items in tree matching searching terms
+
+            :param terms: Text emitted by Search Bar signal
+            :type terms: str
+        """
+        terms_sequence = terms.lower().split()
+
+        for item in self.all_name_items:
+            parent_item = item.parent()
+
+
+            if len(terms) > 0:
+                reference_data = item.data(1, QtCore.Qt.ForegroundRole)
+                reference_lower = reference_data.lower()
+
+                checker = True
+
+                for term in terms_sequence:
+                    if term not in reference_lower:
+                        checker = False
+
+                if checker:
+                    item.setHidden(False)
+                    parent_item.setExpanded(True)
+
+                else:
+                    item.setHidden(True)
+
+            else:
+                item.setHidden(False)
+                parent_item.setExpanded(False)
+
+
