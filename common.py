@@ -1,14 +1,12 @@
 COLUMNS_SIZES = {
-    0: 400,
+    0: 450,
     1: 600,
-    2: 100,
-    3: 100
+    2: 50,
 }
 
 HEADERS_LIST = [
     "Expression",
     "Description",
-    "Generate",
-    "Quick Example"
+    "Action",
 ]
 

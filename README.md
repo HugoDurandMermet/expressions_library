@@ -25,3 +25,8 @@ Make a right click on a knob inside Nuke, and when the context menu opens you sh
 
 Click on it and a dialog will pop up, divided in four main categories for all saved TCL expressions.
 
+## Update:
+
+Now featuring the following functionalities:
+* Search bar
+* Dynamic form for each expression

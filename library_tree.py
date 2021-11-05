@@ -13,6 +13,8 @@ from common import (
     HEADERS_LIST,
 )
 
+from expression_form import ExpressionFormWidget
+from utils import openAlertDialog
 
 fonts = {
     'categories': QtGui.QFont("Helvetica", 14),
@@ -47,7 +49,6 @@ class LibraryTreeWidget(QtWidgets.QTreeWidget):
         self.setHeaderLabels(HEADERS_LIST)
 
         self.expressions_data = {}
-        self.all_category_items = []
         self.all_name_items = []
 
         self.loadData()
@@ -76,8 +77,6 @@ class LibraryTreeWidget(QtWidgets.QTreeWidget):
             category_label.setFont(category_font)
 
             self.setItemWidget(category_item, 0, category_label)
-            self.all_category_items.append(category_item)
-
             expressions = self.expressions_data[category]
 
 
@@ -116,38 +115,86 @@ class LibraryTreeWidget(QtWidgets.QTreeWidget):
 
                 generate_button = QtWidgets.QPushButton("Generate")
                 generate_button.setObjectName("generate_button")
-                generate_button.setFixedSize(QtCore.QSize(80, 35))
-
-                generate_button.clicked.connect(
-                    partial(self.generate_expression, expression["expression"])
-                )
+                #generate_button.setFixedSize(QtCore.QSize(80, 35))
 
                 self.setItemWidget(expression_item, 0, expression_label)
                 self.setItemWidget(expression_item, 1, description_label)
-                self.setItemWidget(expression_item, 2, generate_button)
+
 
                 if len(expression["example"]) > 1:
                     example_button = QtWidgets.QPushButton("Quick Example")
-                    example_button.setFixedSize(QtCore.QSize(90, 35))
+                    #example_button.setFixedSize(QtCore.QSize(90, 35))
                     example_button.setObjectName("example_button")
                     example_button.clicked.connect(
                         partial(self.generate_expression, expression["example"])
                     )
-                    self.setItemWidget(expression_item, 3, example_button)
+                    self.setItemWidget(expression_item, 2, example_button)
 
+                if expression.get("fields"):
+                    form_item = QtWidgets.QTreeWidgetItem(name_item)
+                    form_widget = ExpressionFormWidget(expression)
+
+                    self.setItemWidget(form_item, 1, form_widget)
+                    self.setItemWidget(form_item, 2, generate_button)
+                    generate_button.clicked.connect(
+                        partial(
+                            self.generate_expression,
+                            expression,
+                            form_widget.result
+                        )
+                    )
+
+                else:
+                    generate_button.clicked.connect(
+                        partial(self.generate_expression, expression)
+                    )
+                    self.setItemWidget(expression_item, 2, generate_button)
 
         self.sortItems(0, QtCore.Qt.AscendingOrder)
         self.setSortingEnabled(True)
         self.setSelectionMode(QtWidgets.QAbstractItemView.NoSelection)
 
 
-    def generate_expression(self, expression):
+    def generate_expression(self, data, form_values=None):
         """ Set a chosen expression in the target knob
 
-            :param expression: A TCL expression
-            :type expression: str
+            :param data: Original Data from Expression Item
+            :type data: dict
+            :param form_values: Data from Form Item, defaults to None
+            :type form_values: dict, optional
         """
+        expression = data['expression']
+        field_operations = data['fields']['optional_operations']
+
+        if form_values is not None:
+
+            required_field_values = form_values['required']
+            optional_field_values = form_values['optional']
+
+            for required_key in required_field_values.keys():
+                this_value = required_field_values[required_key]
+                if this_value is None:
+                    openAlertDialog("{} field is empty and required".format(
+                        required_key
+                    ))
+                else:
+                    expression = expression.replace(required_key, this_value)
+
+            for optional_key in optional_field_values:
+                for operation in field_operations:
+                    if optional_key in operation:
+                        this_operation = operation
+
+                this_value = optional_field_values[optional_key]
+                if this_value is None:
+                    if this_operation in expression:
+                        expression = expression.replace(this_operation, '')
+                else:
+                    expression = expression.replace(optional_key, this_value)
+
+
         self.target_knob.setExpression(expression)
+        self.parent().exit_app()
 
 
     def search_items(self, terms):

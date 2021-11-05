@@ -29,8 +29,8 @@ class ExpressionsLibraryWidget(QtWidgets.QDialog):
         self.setLayout(self.layout)
 
         with open(qss_filepath, "r") as f:
-            _style = f.read()
-            self.setStyleSheet(_style)
+            style = f.read()
+            self.setStyleSheet(style)
 
         current_knob = getCurrentKnob()
 
@@ -42,6 +42,11 @@ class ExpressionsLibraryWidget(QtWidgets.QDialog):
         self.layout.addWidget(search_widget)
         self.layout.addWidget(tree_widget)
         self.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+
+    def exit_app(self):
+        """ Close the dialog
+        """
+        self.close()
 
 
 if __name__ == "__main__":
