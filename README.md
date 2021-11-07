@@ -25,19 +25,19 @@ Make a right click on a knob inside Nuke, and when the context menu opens you sh
 
 Click on it and a dialog will pop up, divided in four main categories for all saved TCL expressions.
 
-![screenshot of dialog opened](./resources/documentation_images/dialog_opened.png)
+![screenshot of dialog opened](./resources/documentation_images/dialog_opened.PNG)
 
 For each expression, you should find a description, a fields form if the expression receives arguments, and a Generate Button.
 
-![screenshot of dialog on a knob expression](./resources/documentation_images/dialog_on_combobox.png)
+![screenshot of dialog on a knob expression](./resources/documentation_images/dialog_on_combobox.PNG)
 
 If the expression targets a Knob or a Node within Nuke, the usual text form will be traded for two dropdown menus, one listing all Nodes in the current script, the other listing all Knobs for the Node selected in the previous menu.
 
-![screenshot of dialog on waves](./resources/documentation_images/dialog_on_waves.png)
+![screenshot of dialog on waves](./resources/documentation_images/dialog_on_waves.PNG)
 
 The Waves category is a bit of an outlier:
 as depicted in the screenshot, the text description has been swaped for an illustration of the type of animation curve produced by the expression.
 
-![screenshot of dialog on search](./resources/documentation_images/dialog_on_search.png)
+![screenshot of dialog on search](./resources/documentation_images/dialog_on_search.PNG)
 
 Finally the Search Bar on top of the dialog will filter all expressions to find only the ones which descriptions or formulas match the terms typed.
