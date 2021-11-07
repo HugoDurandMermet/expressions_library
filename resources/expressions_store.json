@@ -3,7 +3,7 @@
         "Random wave": {
             "expression": "random((frame+offset)/waveLength)*(maxVal-minVal) + minVal",
             "example": "random((frame)/10)",
-            "description": "",
+            "description": "random_wave.png",
             "fields": {
                 "required": ["waveLength"],
                 "optional": ["offset", "maxVal", "minVal"],
@@ -13,7 +13,7 @@
         "Noise wave": {
             "expression": "(noise((frame+offset)/waveLength)+1)/2 * (maxVal-minVal) + minVal",
             "example": "(noise((frame)/10)+1)/2",
-            "description": "",
+            "description": "noise_wave.png",
             "fields": {
                 "required": ["waveLength"],
                 "optional": ["offset", "maxVal", "minVal"],
@@ -23,7 +23,7 @@
         "Sine wave": {
             "expression": "(sin(2*pi*(frame+offset)/waveLength)+1)/2 * (maxVal-minVal) + minVal",
             "example": "(sin(2*pi*(frame)/24)+1)/2",
-            "description": "",
+            "description": "sine_wave.png",
             "fields": {
                 "required": ["waveLength"],
                 "optional": ["offset", "maxVal", "minVal"],
@@ -33,7 +33,7 @@
         "Triangle wave": {
             "expression": "(asin(sin(2*pi*(frame+offset)/waveLength))/pi+0.5) * (maxVal-minVal) + minVal",
             "example": "(asin(sin(2*pi*(frame)/24))/pi+0.5)",
-            "description": "",
+            "description": "triangle_wave.png",
             "fields": {
                 "required": ["waveLength"],
                 "optional": ["offset", "maxVal", "minVal"],
@@ -43,7 +43,7 @@
         "Square wave": {
             "expression": "int(sin(2*pi*(frame+offset)/waveLength)+1) * (maxVal-minVal) + minVal",
             "example": "int(sin(2*pi*(frame)/24)+1)",
-            "description": "",
+            "description": "square_wave.png",
             "fields": {
                 "required": ["waveLength"],
                 "optional": ["offset", "maxVal", "minVal"],
@@ -53,7 +53,7 @@
         "Sawtooth wave": {
             "expression": "((frame+offset) % waveLength)/waveLength * (maxVal-minVal) + minVal",
             "example": "((frame) % 24)/24",
-            "description": "",
+            "description": "sawtooth_wave.png",
             "fields": {
                 "required": ["waveLength"],
                 "optional": ["offset", "maxVal", "minVal"],
@@ -63,7 +63,7 @@
         "Sawtooth (parabolic) wave":{
             "expression": "sin((pi*(frame+offset)/(2*waveLength)) % (pi/2)) * (maxVal-minVal) + minVal",
             "example": "sin((pi*(frame)/(2*24)) % (pi/2))",
-            "description": "",
+            "description": "sawtooth_parabolic_wave.png",
             "fields": {
                 "required": ["waveLength"],
                 "optional": ["offset", "maxVal", "minVal"],
@@ -73,7 +73,7 @@
         "Sawtooth (parabolic reversed) wave":{
             "expression": "cos((pi*(frame+offset)/(2*waveLength)) % (pi/2)) * (maxVal-minVal) + minVal",
             "example": "cos((pi*(frame)/(2*24)) % (pi/2))",
-            "description": "",
+            "description": "sawtooth_parabolic_reversed_wave.png",
             "fields": {
                 "required": ["waveLength"],
                 "optional": ["offset", "maxVal", "minVal"],
@@ -83,7 +83,7 @@
         "Sawtooth (exponential) wave":{
             "expression": "(exp(2*pi*((frame+offset) % waveLength)/waveLength)-1)/exp(2*pi) * (maxVal-minVal) + minVal",
             "example": "(exp(2*pi*((frame) % 24)/24)-1)/exp(2*pi)",
-            "description": "",
+            "description": "sawtooth_exponential_wave.png",
             "fields": {
                 "required": ["waveLength"],
                 "optional": ["offset", "maxVal", "minVal"],
@@ -93,7 +93,7 @@
         "Bounce wave":{
             "expression": "abs(sin(pi*(frame + offset)/waveLength))* (maxVal-minVal) + minVal",
             "example": "abs(sin(pi*(frame)/24))",
-            "description": "",
+            "description": "bounce_wave.png",
             "fields": {
                 "required": ["waveLength"],
                 "optional": ["offset", "maxVal", "minVal"],
@@ -103,7 +103,7 @@
         "Blip":{
             "expression": "((frame+(offset+waveLength)) % (waveLength+blipLength)/(waveLength))*(waveLength/blipLength) - (waveLength/blipLength) >= 0 ? maxVal : minVal",
             "example": "((frame+20) % (20+5)/(20)) *(20/5) - (20/5) >= 0 ? 1 : 0",
-            "description": "",
+            "description": "blip.png",
             "fields": {
                 "required": ["waveLength", "blipLength", "maxVal", "minVal"],
                 "optional": ["offset"],
@@ -113,7 +113,7 @@
         "Sineblip":{
             "expression": "((int((frame+offset) % waveLength)) >= 0 ? ((int((frame+offset) % waveLength))<= (0+(blipLength-1)) ? ((sin(pi*((frame+offset) % waveLength)/blipLength)/2+1/2) *(2*maxVal-2*minVal) + (2*minVal-maxVal)) : minVal)  : minVal)",
             "example": "((int(frame % 20)) >= 0 ? ((int(frame % 20)) <= (5-1) ?((sin(pi*(frame % 20)/5)/2+1/2) * (2*1-2*0) + (2*0-1)) : 0)  : 0)",
-            "description": "",
+            "description": "sineblip.png",
             "fields": {
                 "required": ["waveLength", "blipLength", "maxVal", "minVal"],
                 "optional": ["offset"],
@@ -259,7 +259,7 @@
             "example": "",
             "description": "Returns the current value of a knob",
             "fields": {
-                "required": ["value", "knob_name"],
+                "required": ["knob_name"],
                 "optional": [],
                 "optional_operations": []
             }

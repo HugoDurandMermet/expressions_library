@@ -14,7 +14,10 @@ from common import (
 )
 
 from expression_form import ExpressionFormWidget
-from utils import openAlertDialog
+from utils import (
+    openAlertDialog,
+    getAllNodesAndKnobs
+)
 
 fonts = {
     'categories': QtGui.QFont("Helvetica", 14),
@@ -23,6 +26,10 @@ fonts = {
 }
 
 data_json_filepath = "{root}/resources/expressions_store.json".format(
+    root=os.path.dirname(os.path.realpath(__file__))
+)
+
+waves_images_folder = "{root}/resources/waves_images/".format(
     root=os.path.dirname(os.path.realpath(__file__))
 )
 
@@ -41,6 +48,8 @@ class LibraryTreeWidget(QtWidgets.QTreeWidget):
         """
         QtWidgets.QTreeWidget.__init__(self)
         self.target_knob = knob
+        self.nodes_and_knobs = getAllNodesAndKnobs()
+        
         self.setColumnCount(len(HEADERS_LIST))
 
         for key in COLUMNS_SIZES.keys():
@@ -106,24 +115,38 @@ class LibraryTreeWidget(QtWidgets.QTreeWidget):
                 expression_label.setWordWrap(True)
                 expression_label.setObjectName("expression_label")
                 expression_label.setFont(fonts['expressions'])
+                
+                self.setItemWidget(expression_item, 0, expression_label)
 
-
-                description_label = QtWidgets.QLabel(expression["description"])
-                description_label.setWordWrap(True)
-                description_label.setObjectName("description_label")
-                description_label.setFont(fonts['descriptions'])
+                if category == "Waves":
+                    picture_path = waves_images_folder + expression["description"]
+                    illustration_pixmap = QtGui.QPixmap(picture_path)
+                    illustration_pixmap = illustration_pixmap.scaledToWidth(
+                        500, QtCore.Qt.SmoothTransformation
+                    )
+                    
+                    illustration_label = QtWidgets.QLabel(self)
+                    illustration_label.setPixmap(illustration_pixmap)
+                    illustration_label.setScaledContents(True)
+                    
+                    self.setItemWidget(expression_item, 1, illustration_label)
+                else:
+                    description_label = QtWidgets.QLabel(expression["description"])
+                    description_label.setWordWrap(True)
+                    description_label.setObjectName("description_label")
+                    description_label.setFont(fonts['descriptions'])
+                    
+                    self.setItemWidget(expression_item, 1, description_label)
 
                 generate_button = QtWidgets.QPushButton("Generate")
                 generate_button.setObjectName("generate_button")
-                #generate_button.setFixedSize(QtCore.QSize(80, 35))
 
-                self.setItemWidget(expression_item, 0, expression_label)
-                self.setItemWidget(expression_item, 1, description_label)
+                
+                
 
 
                 if len(expression["example"]) > 1:
                     example_button = QtWidgets.QPushButton("Quick Example")
-                    #example_button.setFixedSize(QtCore.QSize(90, 35))
                     example_button.setObjectName("example_button")
                     example_button.clicked.connect(
                         partial(self.generate_expression, expression["example"])
@@ -132,7 +155,7 @@ class LibraryTreeWidget(QtWidgets.QTreeWidget):
 
                 if expression.get("fields"):
                     form_item = QtWidgets.QTreeWidgetItem(name_item)
-                    form_widget = ExpressionFormWidget(expression)
+                    form_widget = ExpressionFormWidget(self, expression)
 
                     self.setItemWidget(form_item, 1, form_widget)
                     self.setItemWidget(form_item, 2, generate_button)
@@ -153,6 +176,7 @@ class LibraryTreeWidget(QtWidgets.QTreeWidget):
         self.sortItems(0, QtCore.Qt.AscendingOrder)
         self.setSortingEnabled(True)
         self.setSelectionMode(QtWidgets.QAbstractItemView.NoSelection)
+        self.setFocusPolicy(QtCore.Qt.NoFocus)
 
 
     def generate_expression(self, data, form_values=None):

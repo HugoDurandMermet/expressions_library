@@ -10,6 +10,7 @@ from search_bar import SearchBar
 from utils import getCurrentKnob
 
 
+
 qss_filepath = "{root}/style.qss".format(
     root=os.path.dirname(os.path.realpath(__file__))
 )
@@ -23,6 +24,7 @@ class ExpressionsLibraryWidget(QtWidgets.QDialog):
     """
     def __init__(self, parent=None):
         QtWidgets.QDialog.__init__(self, parent)
+        
         self.setWindowTitle("Expressions Library")
         self.resize(1300, 550)
         self.layout = QtWidgets.QVBoxLayout()
