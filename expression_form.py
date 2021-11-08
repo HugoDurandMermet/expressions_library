@@ -20,7 +20,7 @@ class ExpressionFormWidget(QtWidgets.QWidget):
             :type data: dict
         """
         QtWidgets.QWidget.__init__(self, parent=None)
-        
+
         self.parent = parent
         self.required_fields = data['fields']['required']
         self.optional_fields = data['fields']['optional']
@@ -54,32 +54,38 @@ class ExpressionFormWidget(QtWidgets.QWidget):
             )
             required_field_label.setObjectName("required_label")
             required_field_label.setFont(QtGui.QFont("Helvetica", 12))
-            
+
             required_field_layout.addWidget(required_field_label)
-            
+
             if "knob" in required_field:
                 node_combo_box = QtWidgets.QComboBox()
+                node_combo_box.setCursor(
+                    QtGui.QCursor(QtCore.Qt.PointingHandCursor)
+                )
                 node_combo_box.addItems(
                     self.parent.nodes_and_knobs.keys()
                 )
                 node_combo_box.setCurrentIndex(-1)
-                
+
                 knob_combo_box = QtWidgets.QComboBox()
+                knob_combo_box.setCursor(
+                    QtGui.QCursor(QtCore.Qt.PointingHandCursor)
+                )
                 knob_combo_box.setEnabled(False)
-                
+
                 node_combo_box.currentTextChanged.connect(
-                    lambda text, field=required_field, knob_cb=knob_combo_box: 
+                    lambda text, field=required_field, knob_cb=knob_combo_box:
                         self.onNodeComboBoxSelection(text, field, knob_cb)
                 )
-                
+
                 knob_combo_box.currentTextChanged.connect(
-                    lambda text, field=required_field: 
+                    lambda text, field=required_field:
                         self.onKnobComboBoxSelection(text, field)
                 )
-                
+
                 required_field_layout.addWidget(node_combo_box)
                 required_field_layout.addWidget(knob_combo_box)
-            
+
             else:
                 required_field_line_edit = QtWidgets.QLineEdit()
                 required_field_line_edit.setPlaceholderText(required_field)
@@ -138,7 +144,7 @@ class ExpressionFormWidget(QtWidgets.QWidget):
 
 
     def onNodeComboBoxSelection(self, node_name, field, knob_combobox):
-        """ Method called when a Node combobox gets a selection. 
+        """ Method called when a Node combobox gets a selection.
             Populates the following Knob combobox
 
             :param node_name: Name of the Node selected
@@ -156,7 +162,7 @@ class ExpressionFormWidget(QtWidgets.QWidget):
         self.result["required"][field] = node_name
 
     def onKnobComboBoxSelection(self, knob_name, field):
-        """ Method called when a Knob combobox gets a selection. 
+        """ Method called when a Knob combobox gets a selection.
 
             :param knob_name: Name of the Knob selected
             :type knob_name: str

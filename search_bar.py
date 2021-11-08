@@ -1,5 +1,7 @@
 from PySide2 import (
     QtWidgets,
+    QtGui,
+    QtCore
 )
 
 
@@ -20,6 +22,9 @@ class SearchBar(QtWidgets.QWidget):
         self.line_edit.setPlaceholderText("Search expression here...")
 
         clear_button = QtWidgets.QPushButton("Clear")
+        clear_button.setCursor(
+            QtGui.QCursor(QtCore.Qt.PointingHandCursor)
+        )
         clear_button.clicked.connect(self.clear)
 
         layout.addWidget(self.line_edit)

@@ -49,7 +49,7 @@ class LibraryTreeWidget(QtWidgets.QTreeWidget):
         QtWidgets.QTreeWidget.__init__(self)
         self.target_knob = knob
         self.nodes_and_knobs = getAllNodesAndKnobs()
-        
+
         self.setColumnCount(len(HEADERS_LIST))
 
         for key in COLUMNS_SIZES.keys():
@@ -115,7 +115,7 @@ class LibraryTreeWidget(QtWidgets.QTreeWidget):
                 expression_label.setWordWrap(True)
                 expression_label.setObjectName("expression_label")
                 expression_label.setFont(fonts['expressions'])
-                
+
                 self.setItemWidget(expression_item, 0, expression_label)
 
                 if category == "Waves":
@@ -124,41 +124,60 @@ class LibraryTreeWidget(QtWidgets.QTreeWidget):
                     illustration_pixmap = illustration_pixmap.scaledToWidth(
                         500, QtCore.Qt.SmoothTransformation
                     )
-                    
+
                     illustration_label = QtWidgets.QLabel(self)
                     illustration_label.setPixmap(illustration_pixmap)
                     illustration_label.setScaledContents(True)
-                    
+
                     self.setItemWidget(expression_item, 1, illustration_label)
                 else:
                     description_label = QtWidgets.QLabel(expression["description"])
                     description_label.setWordWrap(True)
                     description_label.setObjectName("description_label")
                     description_label.setFont(fonts['descriptions'])
-                    
+
                     self.setItemWidget(expression_item, 1, description_label)
 
                 generate_button = QtWidgets.QPushButton("Generate")
                 generate_button.setObjectName("generate_button")
-
-                
-                
+                generate_button.setCursor(
+                    QtGui.QCursor(QtCore.Qt.PointingHandCursor)
+                )
+                generate_widget = QtWidgets.QWidget()
+                generate_layout = QtWidgets.QVBoxLayout()
+                generate_widget.setLayout(generate_layout)
+                generate_layout.addWidget(generate_button)
+                generate_button.setFixedSize(
+                    QtCore.QSize(100, 50)
+                )
 
 
                 if len(expression["example"]) > 1:
                     example_button = QtWidgets.QPushButton("Quick Example")
                     example_button.setObjectName("example_button")
+                    example_button.setCursor(
+                        QtGui.QCursor(QtCore.Qt.PointingHandCursor)
+                    )
                     example_button.clicked.connect(
                         partial(self.generate_expression, expression["example"])
                     )
-                    self.setItemWidget(expression_item, 2, example_button)
+
+                    example_widget = QtWidgets.QWidget()
+                    example_layout = QtWidgets.QVBoxLayout()
+                    example_widget.setLayout(example_layout)
+                    example_layout.addWidget(example_button)
+
+                    example_button.setFixedSize(
+                        QtCore.QSize(100, 50)
+                    )
+                    self.setItemWidget(expression_item, 2, example_widget)
 
                 if expression.get("fields"):
                     form_item = QtWidgets.QTreeWidgetItem(name_item)
                     form_widget = ExpressionFormWidget(self, expression)
 
                     self.setItemWidget(form_item, 1, form_widget)
-                    self.setItemWidget(form_item, 2, generate_button)
+                    self.setItemWidget(form_item, 2, generate_widget)
                     generate_button.clicked.connect(
                         partial(
                             self.generate_expression,
@@ -171,7 +190,7 @@ class LibraryTreeWidget(QtWidgets.QTreeWidget):
                     generate_button.clicked.connect(
                         partial(self.generate_expression, expression)
                     )
-                    self.setItemWidget(expression_item, 2, generate_button)
+                    self.setItemWidget(expression_item, 2, generate_widget)
 
         self.sortItems(0, QtCore.Qt.AscendingOrder)
         self.setSortingEnabled(True)
